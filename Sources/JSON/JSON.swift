@@ -21,14 +21,28 @@ public enum JSON:
     }
 
     public subscript(key: String) -> JSON? {
-        guard case let .dictionary(dict) = self else { return nil }
-        return dict[key]
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            dict[key] = newValue
+            self = .dictionary(dict)
+        }
     }
 
     public subscript(index: Int) -> JSON? {
-        guard case let .array(arr) = self, index < arr.count
-        else { return nil }
-        return arr[index]
+        get {
+            guard case let .array(arr) = self, index < arr.count
+            else { return nil }
+            return arr[index]
+        }
+        set {
+            guard case var .array(arr) = self else { return }
+            arr[index] = newValue ?? .null
+            self = .array(arr)
+        }
     }
 
     /// Returns one of: `Array<Any>`, `Dictionary<String, Any>`,
@@ -191,14 +205,28 @@ extension JSON: Equatable {
 
 public extension Optional where Wrapped == JSON {
     subscript(key: String) -> JSON? {
-        guard case let .dictionary(dict) = self else { return nil }
-        return dict[key]
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            dict[key] = newValue
+            self = .dictionary(dict)
+        }
     }
 
     subscript(index: Int) -> JSON? {
-        guard case let .array(arr) = self, index < arr.count
-        else { return nil }
-        return arr[index]
+        get {
+            guard case let .array(arr) = self, index < arr.count
+            else { return nil }
+            return arr[index]
+        }
+        set {
+            guard case var .array(arr) = self else { return }
+            arr[index] = newValue ?? .null
+            self = .array(arr)
+        }
     }
 
     /// Returns a `Array<Any>` representation of the receiver.

@@ -46,7 +46,7 @@ final class JSONTests: XCTestCase {
         XCTAssertEqual(json, dictionaryJSON)
     }
 
-    func testSubscript() throws {
+    func testGetSubscript() throws {
         let object: JSON = [
             "one": 1,
             "bool": true,
@@ -71,6 +71,33 @@ final class JSONTests: XCTestCase {
 
         let string: JSON = .string("text")
         XCTAssertNil(string["text"])
+    }
+
+    func testSetSubscript() throws {
+        var object: JSON = [
+            "one": 1,
+            "bool": true,
+            "dict": [
+                "key": "value",
+            ],
+        ]
+
+        object["dict"]["key"] = 123
+        XCTAssertEqual(["one": 1, "bool": true, "dict": ["key": 123]], object)
+
+        object["new"] = .null
+        XCTAssertEqual(
+            ["one": 1, "bool": true, "new": nil, "dict": ["key": 123]],
+            object
+        )
+
+        var array: JSON = ["one", nil, 3.14, false]
+
+        array[3] = true
+        XCTAssertEqual(["one", nil, 3.14, true], array)
+
+        array[1] = ["bingo", nil, 3]
+        XCTAssertEqual(["one", ["bingo", nil, 3], 3.14, true], array)
     }
 
     func testRawValue() throws {
