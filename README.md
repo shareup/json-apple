@@ -38,7 +38,7 @@ To use JSON with the Swift Package Manager, add a dependency to your `Package.sw
     dependencies: [
         .package(
             url: "https://github.com/shareup/json-apple.git", 
-            from: "1.0.0"
+            from: "1.1.0"
         )
     ]
  )
