@@ -203,7 +203,7 @@ extension JSON: Equatable {
     }
 }
 
-public extension Optional where Wrapped == JSON {
+public extension JSON? {
     subscript(key: String) -> JSON? {
         get {
             guard case let .dictionary(dict) = self else { return nil }
@@ -347,13 +347,13 @@ public extension Optional where Wrapped == JSON {
     }
 }
 
-extension Array where Element == Any? {
+extension [Any?] {
     var json: JSON {
         .array(compactMap(\.json))
     }
 }
 
-public extension Dictionary where Key == String, Value == Any? {
+public extension [String: Any?] {
     var json: JSON {
         var dictionary = [String: JSON]()
         for (key, value) in self {
@@ -364,7 +364,7 @@ public extension Dictionary where Key == String, Value == Any? {
     }
 }
 
-private extension Optional where Wrapped == Any {
+private extension Any? {
     var json: JSON? {
         guard case let .some(element) = self else { return .null }
 
