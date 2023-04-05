@@ -103,10 +103,16 @@ final class JSONTests: XCTestCase {
         let notDict: [Any?]? = object["dict"]
         XCTAssertNil(notDict)
 
-        let key: String? = object["dict"]["key"]
-        XCTAssertEqual("value", key)
-        let notKey: [Any?]? = object["dict"]["key"]
-        XCTAssertNil(notKey)
+        let val: String? = object["dict"]["key"]
+        XCTAssertEqual("value", val)
+        let notVal: [Any?]? = object["dict"]["key"]
+        XCTAssertNil(notVal)
+
+        if let val: String = object["dict"]["key"] {
+            XCTAssertEqual("value", val)
+        } else {
+            XCTFail("Should have unwrapped value")
+        }
     }
 
     func testSetSubscript() throws {
