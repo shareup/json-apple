@@ -55,12 +55,16 @@ final class JSONTests: XCTestCase {
             ],
         ]
         XCTAssertTrue(object["one"] == 1)
+        XCTAssertEqual(1, object["one"])
         XCTAssertFalse(object["one"] == "one")
+        XCTAssertNotEqual("one", object["one"])
         XCTAssertTrue(object["bool"] == true)
+        XCTAssertEqual(true, object["bool"])
         XCTAssertFalse(object["bool"] == 2.0)
+        XCTAssertNotEqual(2.0, object["bool"])
         XCTAssertTrue(JSON(["key": "value"]) == object["dict"])
         XCTAssertFalse(JSON.array([.string("one"), .boolean(false)]) == object["dict"])
-        XCTAssertNil(object["doesNotExist"])
+        XCTAssertNil(object["doesNotExist"] as JSON?)
         XCTAssertEqual("value", object["dict"]["key"]?.stringValue)
 
         let array = JSON(["one", 2, false])
@@ -70,7 +74,51 @@ final class JSONTests: XCTestCase {
         XCTAssertNil(array[3])
 
         let string: JSON = .string("text")
-        XCTAssertNil(string["text"])
+        XCTAssertNil(string["text"] as JSON?)
+    }
+
+    func testGetConcreteTypeUsingSubscript() throws {
+        let object: JSON = [
+            "one": 1.0,
+            "bool": true,
+            "dict": [
+                "key": "value",
+                "double": 3.14,
+            ] as [String: Any]
+        ]
+        
+        let one: Int? = object["one"]
+        XCTAssertEqual(1, one)
+        let notOne: String? = object["one"]
+        XCTAssertNil(notOne)
+
+        let tru: Bool? = object["bool"]
+        XCTAssertEqual(true, tru)
+        let notTru: Double? = object["bool"]
+        XCTAssertNil(notTru)
+
+        let dict: [String: Any?]? = object["dict"]
+        XCTAssertEqual("value", dict?["key"] as? String)
+        XCTAssertEqual(3.14, dict?["double"] as? Double)
+        let notDict: [Any?]? = object["dict"]
+        XCTAssertNil(notDict)
+
+        let val: String? = object["dict"]["key"]
+        XCTAssertEqual("value", val)
+        let notVal: [Any?]? = object["dict"]["key"]
+        XCTAssertNil(notVal)
+
+        if let val: String = object["dict"]["key"] {
+            XCTAssertEqual("value", val)
+        } else {
+            XCTFail("Should have unwrapped value")
+        }
+
+        if let doub: Double = object["dict"]["double"] {
+            XCTAssertEqual(3.14, doub)
+        } else {
+            XCTFail("Should have unwrapped value")
+        }
     }
 
     func testSetSubscript() throws {
@@ -97,7 +145,10 @@ final class JSONTests: XCTestCase {
         XCTAssertEqual(["one", nil, 3.14, true], array)
 
         array[1] = ["bingo", nil, 3]
-        XCTAssertEqual(["one", ["bingo", nil, 3], 3.14, true], array)
+        XCTAssertEqual(
+            ["one", ["bingo", nil, 3] as [Any?], 3.14, true],
+            array
+        )
     }
 
     func testRawValue() throws {

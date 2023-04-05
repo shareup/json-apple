@@ -32,6 +32,102 @@ public enum JSON:
         }
     }
 
+    public subscript(key: String) -> [Any?]? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.arrayValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .array(newValue.compactMap(\.json))
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
+    public subscript(key: String) -> Bool? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.boolValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .boolean(newValue)
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
+    public subscript(key: String) -> [String: Any?]? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.dictionaryValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .dictionary(newValue.compactMapValues(\.json))
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
+    public subscript(key: String) -> Double? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.doubleValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .number(newValue)
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
+    public subscript(key: String) -> Int? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.integerValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .number(Double(newValue))
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
+    public subscript(key: String) -> String? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.stringValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .string(newValue)
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
     public subscript(index: Int) -> JSON? {
         get {
             guard case let .array(arr) = self, index < arr.count
@@ -212,6 +308,102 @@ public extension JSON? {
         set {
             guard case var .dictionary(dict) = self else { return }
             dict[key] = newValue
+            self = .dictionary(dict)
+        }
+    }
+
+    subscript(key: String) -> [Any?]? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.arrayValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .array(newValue.compactMap(\.json))
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
+    subscript(key: String) -> Bool? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.boolValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .boolean(newValue)
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
+    subscript(key: String) -> [String: Any?]? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.dictionaryValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .dictionary(newValue.compactMapValues(\.json))
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
+    subscript(key: String) -> Double? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.doubleValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .number(newValue)
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
+    subscript(key: String) -> Int? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.integerValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .number(Double(newValue))
+            } else {
+                dict.removeValue(forKey: key)
+            }
+            self = .dictionary(dict)
+        }
+    }
+
+    subscript(key: String) -> String? {
+        get {
+            guard case let .dictionary(dict) = self else { return nil }
+            return dict[key]?.stringValue
+        }
+        set {
+            guard case var .dictionary(dict) = self else { return }
+            if let newValue {
+                dict[key] = .string(newValue)
+            } else {
+                dict.removeValue(forKey: key)
+            }
             self = .dictionary(dict)
         }
     }
