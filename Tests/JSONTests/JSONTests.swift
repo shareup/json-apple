@@ -84,9 +84,9 @@ final class JSONTests: XCTestCase {
             "dict": [
                 "key": "value",
                 "double": 3.14,
-            ] as [String: Any]
+            ] as [String: Any],
         ]
-        
+
         let one: Int? = object["one"]
         XCTAssertEqual(1, one)
         let notOne: String? = object["one"]
