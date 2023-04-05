@@ -79,7 +79,7 @@ final class JSONTests: XCTestCase {
 
     func testGetConcreteTypeUsingSubscript() throws {
         let object: JSON = [
-            "one": 1,
+            "one": 1.0,
             "bool": true,
             "dict": [
                 "key": "value",
@@ -110,6 +110,12 @@ final class JSONTests: XCTestCase {
 
         if let val: String = object["dict"]["key"] {
             XCTAssertEqual("value", val)
+        } else {
+            XCTFail("Should have unwrapped value")
+        }
+
+        if let doub: Double = object["dict"]["double"] {
+            XCTAssertEqual(3.14, doub)
         } else {
             XCTFail("Should have unwrapped value")
         }
