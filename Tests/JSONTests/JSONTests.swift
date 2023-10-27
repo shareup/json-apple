@@ -259,6 +259,31 @@ final class JSONTests: XCTestCase {
         XCTAssertTrue(JSON.string("boom") as JSON? == "boom")
     }
 
+    func testCodable() throws {
+        let json: JSON = [
+            "one": 2,
+            "two_text": "two",
+            "pi": 3.14,
+            "yes": true,
+            "null": nil,
+            "object": [
+                "three": 3,
+                "four_text": "four",
+                "null": nil,
+                "inner_array": [
+                    "index_0",
+                    false,
+                    4.20,
+                ] as [Any?],
+            ] as [String: Any?],
+        ]
+
+        let encoded = try JSONEncoder().encode(json)
+        let decoded = try JSONDecoder().decode(JSON.self, from: encoded)
+
+        XCTAssertEqual(decoded, json)
+    }
+
     func testInitWithLiteralTypes() throws {
         XCTAssertEqual(
             JSON.array([.boolean(true), .number(3.14), .null]),

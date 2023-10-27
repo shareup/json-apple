@@ -299,6 +299,55 @@ extension JSON: Equatable {
     }
 }
 
+extension JSON: Codable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+
+        if container.decodeNil() {
+            self = .null
+        } else if let bool = try? container.decode(Bool.self) {
+            self = .boolean(bool)
+        } else if let double = try? container.decode(Double.self) {
+            self = .number(double)
+        } else if let string = try? container.decode(String.self) {
+            self = .string(string)
+        } else if let array = try? container.decode([JSON].self) {
+            self = .array(array)
+        } else if let dictionary = try? container.decode([String: JSON].self) {
+            self = .dictionary(dictionary)
+        } else {
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Invalid JSON value."
+            )
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        switch self {
+        case .null:
+            try container.encodeNil()
+
+        case let .boolean(bool):
+            try container.encode(bool)
+
+        case let .number(double):
+            try container.encode(double)
+
+        case let .string(string):
+            try container.encode(string)
+
+        case let .array(array):
+            try container.encode(array)
+
+        case let .dictionary(dictionary):
+            try container.encode(dictionary)
+        }
+    }
+}
+
 public extension JSON? {
     subscript(key: String) -> JSON? {
         get {
