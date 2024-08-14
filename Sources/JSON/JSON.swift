@@ -27,7 +27,11 @@ public enum JSON:
         }
         set {
             guard case var .dictionary(dict) = self else { return }
-            dict[key] = newValue
+            if let newValue {
+                dict[key] = newValue
+            } else {
+                dict.removeValue(forKey: key)
+            }
             self = .dictionary(dict)
         }
     }
@@ -616,7 +620,6 @@ private extension Any? {
         case let e as NSNumber where e.isBool: return .boolean(e.boolValue)
         case let e as NSNumber: return .number(e.doubleValue)
         case let e as String: return .string(e)
-
         // The above cases should catch everything, but, in case they
         // don't, we try remaining types here.
         case let e as Bool: return .boolean(e)
@@ -633,7 +636,7 @@ private extension Any? {
         case let e as UInt16: return .number(Double(e))
         case let e as UInt32: return .number(Double(e))
         case let e as UInt64: return .number(Double(e))
-
+        case let e as JSON: return e
         default: return nil
         }
     }
