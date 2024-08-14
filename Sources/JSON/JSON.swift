@@ -27,7 +27,11 @@ public enum JSON:
         }
         set {
             guard case var .dictionary(dict) = self else { return }
-            dict[key] = newValue
+            if let newValue {
+                dict[key] = newValue
+            } else {
+                dict.removeValue(forKey: key)
+            }
             self = .dictionary(dict)
         }
     }
@@ -633,6 +637,8 @@ private extension Any? {
         case let e as UInt16: return .number(Double(e))
         case let e as UInt32: return .number(Double(e))
         case let e as UInt64: return .number(Double(e))
+
+        case let e as JSON: return e
 
         default: return nil
         }

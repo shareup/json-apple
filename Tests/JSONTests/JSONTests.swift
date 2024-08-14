@@ -305,4 +305,38 @@ final class JSONTests: XCTestCase {
 
         XCTAssertEqual(JSON.string("😊"), "😊")
     }
+
+    func testInitWithMixedTypesIncludingJSON() throws {
+        let mixed = [
+            "one": 1,
+            "two": 2.0,
+            "a": "a",
+            "b": JSON.string("b"),
+            "array": [
+                10, true, JSON.null, JSON.boolean(false),
+            ],
+            "json_array": JSON.array([
+                .number(10), .boolean(true), .null, .boolean(false),
+            ]),
+            "dictionary": [
+                "z": "Z",
+                "true": JSON.boolean(true),
+                "true2": true,
+                "number": 123.0,
+            ],
+            "json_dictionary": JSON.dictionary([
+                "z": .string("Z"),
+                "true": .boolean(true),
+                "true2": .boolean(true),
+                "number": .number(123.0),
+            ]),
+        ]
+
+        let json = JSON(mixed)
+
+        guard case let .dictionary(dict) = json else {
+            return XCTFail()
+        }
+        XCTAssertEqual(dict, mixed)
+    }
 }
