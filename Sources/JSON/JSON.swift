@@ -150,22 +150,22 @@ public enum JSON:
     public var rawValue: Any {
         switch self {
         case let .array(array):
-            return array.map(\.rawValue)
+            array.map(\.rawValue)
 
         case let .boolean(bool):
-            return bool
+            bool
 
         case let .dictionary(dictionary):
-            return dictionary.mapValues(\.rawValue)
+            dictionary.mapValues(\.rawValue)
 
         case .null:
-            return NSNull()
+            NSNull()
 
         case let .number(number):
-            return number
+            number
 
         case let .string(string):
-            return string
+            string
         }
     }
 
@@ -203,9 +203,9 @@ public enum JSON:
     /// underlying type is `.number`, otherwise `nil`.
     public var integerValue: Int? {
         if let double = rawValue as? Double {
-            return Int(double)
+            Int(double)
         } else {
-            return nil
+            nil
         }
     }
 
@@ -214,6 +214,19 @@ public enum JSON:
     public var stringValue: String? {
         guard let string = rawValue as? String else { return nil }
         return string
+    }
+
+    /// Returns `true` if the receiver is an array, otherwise `false`.
+    public var isArray: Bool {
+        guard case .array = self else { return false }
+        return true
+    }
+
+    /// Returns `true` if the receiver is a JSON object (a "dictionary"),
+    /// otherwise `false`.
+    public var isObject: Bool {
+        guard case .dictionary = self else { return false }
+        return true
     }
 
     public var description: String {
@@ -280,25 +293,25 @@ extension JSON: Equatable {
     public static func == (_ arg1: JSON, _ arg2: JSON) -> Bool {
         switch (arg1, arg2) {
         case let (.array(one), .array(two)):
-            return one == two
+            one == two
 
         case let (.boolean(one), .boolean(two)):
-            return one == two
+            one == two
 
         case let (.dictionary(one), .dictionary(two)):
-            return one == two
+            one == two
 
         case let (.number(one), .number(two)):
-            return one == two
+            one == two
 
         case (.null, .null):
-            return true
+            true
 
         case let (.string(one), .string(two)):
-            return one == two
+            one == two
 
         default:
-            return false
+            false
         }
     }
 }
@@ -508,9 +521,9 @@ public extension JSON? {
     /// underlying type is `.number`, otherwise `nil`.
     var integerValue: Int? {
         if let double = self?.rawValue as? Double {
-            return Int(double)
+            Int(double)
         } else {
-            return nil
+            nil
         }
     }
 
@@ -519,6 +532,19 @@ public extension JSON? {
     var stringValue: String? {
         guard let string = self?.rawValue as? String else { return nil }
         return string
+    }
+
+    /// Returns `true` if the receiver is an array, otherwise `false`.
+    var isArray: Bool {
+        guard let self, self.isArray else { return false }
+        return true
+    }
+
+    /// Returns `true` if the receiver is a JSON object (a "dictionary"),
+    /// otherwise `false`.
+    var isObject: Bool {
+        guard let self, self.isObject else { return false }
+        return true
     }
 
     static func == (_ arg1: JSON, _ arg2: JSON?) -> Bool {
@@ -620,7 +646,6 @@ private extension Any? {
         case let e as NSNumber where e.isBool: return .boolean(e.boolValue)
         case let e as NSNumber: return .number(e.doubleValue)
         case let e as String: return .string(e)
-
         // The above cases should catch everything, but, in case they
         // don't, we try remaining types here.
         case let e as Bool: return .boolean(e)
@@ -637,9 +662,7 @@ private extension Any? {
         case let e as UInt16: return .number(Double(e))
         case let e as UInt32: return .number(Double(e))
         case let e as UInt64: return .number(Double(e))
-
         case let e as JSON: return e
-
         default: return nil
         }
     }

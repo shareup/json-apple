@@ -339,4 +339,80 @@ final class JSONTests: XCTestCase {
         }
         XCTAssertEqual(dict, mixed)
     }
+
+    func testIsArray() throws {
+        let array: JSON = ["one", 2, 3.0, true, nil]
+        XCTAssertTrue(array.isArray)
+
+        let object: JSON = ["one": 1, "two": 2, "three": 3]
+        XCTAssertFalse(object.isArray)
+
+        let string: JSON = "string"
+        XCTAssertFalse(string.isArray)
+
+        let number: JSON = 123
+        XCTAssertFalse(number.isArray)
+
+        let bool: JSON = true
+        XCTAssertFalse(bool.isArray)
+
+        let null: JSON = nil
+        XCTAssertFalse(null.isArray)
+
+        let optionalArray: JSON? = ["one", 2, 3.0, true, nil]
+        XCTAssertTrue(optionalArray.isArray)
+
+        let optionalObject: JSON? = ["one": 1, "two": 2, "three": 3]
+        XCTAssertFalse(optionalObject.isArray)
+
+        let optionalString: JSON? = "string"
+        XCTAssertFalse(optionalString.isArray)
+
+        let optionalNumber: JSON? = 123
+        XCTAssertFalse(optionalNumber.isArray)
+
+        let optionalBool: JSON? = true
+        XCTAssertFalse(optionalBool.isArray)
+
+        let optionalNull: JSON? = nil
+        XCTAssertFalse(optionalNull.isArray)
+    }
+
+    func testIsObject() throws {
+        let array: JSON = ["one", 2, 3.0, true, nil]
+        XCTAssertFalse(array.isObject)
+
+        let object: JSON = ["one": 1, "two": 2, "three": 3]
+        XCTAssertTrue(object.isObject)
+
+        let string: JSON = "string"
+        XCTAssertFalse(string.isObject)
+
+        let number: JSON = 123
+        XCTAssertFalse(number.isObject)
+
+        let bool: JSON = true
+        XCTAssertFalse(bool.isObject)
+
+        let null: JSON = nil
+        XCTAssertFalse(null.isObject)
+
+        let optionalArray: JSON? = ["one", 2, 3.0, true, nil]
+        XCTAssertFalse(optionalArray.isObject)
+
+        let optionalObject: JSON? = ["one": 1, "two": 2, "three": 3]
+        XCTAssertTrue(optionalObject.isObject)
+
+        let optionalString: JSON? = "string"
+        XCTAssertFalse(optionalString.isObject)
+
+        let optionalNumber: JSON? = 123
+        XCTAssertFalse(optionalNumber.isObject)
+
+        let optionalBool: JSON? = true
+        XCTAssertFalse(optionalBool.isObject)
+
+        let optionalNull: JSON? = nil
+        XCTAssertFalse(optionalNull.isObject)
+    }
 }
