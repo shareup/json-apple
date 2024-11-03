@@ -3,33 +3,33 @@ import Foundation
 public extension [String: Any] {
     func boolValue(forKey key: String) -> Bool? {
         if let v = self[key] as? Bool {
-            return v
+            v
         } else if let v = self[key] as? NSNumber, v.isBool {
-            return v.boolValue
+            v.boolValue
         } else {
-            return nil
+            nil
         }
     }
 
     func doubleValue(forKey key: String) -> Double? {
         if let v = self[key] as? Double {
-            return v
+            v
         } else if let v = self[key] as? NSNumber, !v.isBool {
-            return v.doubleValue
+            v.doubleValue
         } else {
-            return nil
+            nil
         }
     }
 
     func intValue(forKey key: String) -> Int? {
         if let v = self[key] as? Int {
-            return v
+            v
         } else if let v = self[key] as? Double {
-            return Int(v)
+            Int(v)
         } else if let v = self[key] as? NSNumber, !v.isBool {
-            return v.intValue
+            v.intValue
         } else {
-            return nil
+            nil
         }
     }
 }
@@ -37,33 +37,33 @@ public extension [String: Any] {
 public extension [String: Any]? {
     func boolValue(forKey key: String) -> Bool? {
         if let v = self?[key] as? Bool {
-            return v
+            v
         } else if let v = self?[key] as? NSNumber, v.isBool {
-            return v.boolValue
+            v.boolValue
         } else {
-            return nil
+            nil
         }
     }
 
     func doubleValue(forKey key: String) -> Double? {
         if let v = self?[key] as? Double {
-            return v
+            v
         } else if let v = self?[key] as? NSNumber, !v.isBool {
-            return v.doubleValue
+            v.doubleValue
         } else {
-            return nil
+            nil
         }
     }
 
     func intValue(forKey key: String) -> Int? {
         if let v = self?[key] as? Int {
-            return v
+            v
         } else if let v = self?[key] as? Double {
-            return Int(v)
+            Int(v)
         } else if let v = self?[key] as? NSNumber, !v.isBool {
-            return v.intValue
+            v.intValue
         } else {
-            return nil
+            nil
         }
     }
 }
